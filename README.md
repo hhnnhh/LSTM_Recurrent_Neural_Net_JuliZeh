@@ -4,13 +4,13 @@ A KERAS Long-Short-Term-Memory (LSTM) Recurrent Neural Net (RNN) trained on part
 ## Source:
 Nietzsche Text Generation with LSTM RNN by [KERAS](https://keras.io/examples/lstm_text_generation/)
 
-##Idea: 
+## Idea: 
 Juli Zeh is my favorite German writer and love the idea to be able to generate text that she should have come up with. Therefore I decided built a Juli-Zeh-Text-Robot, based on text she has written. To begin with, I chose one of her earlier books, “Spieltrieb”, published in 2004.
 The model is a Recurrent Neural Network, a type of networks which can handle sequential data such as text. 
 
 The language model predicts the probability of the next word in a sentence based on the words the model observed or was trained on. 
 
-##Data: 
+## Data: 
 According to the Keras developers, the training data set should at least have ~100k characters, but ~1M is better. I chose the book “Spieltrieb” by Juli Zeh and copied a text file of ~180k characters from it, while randomizing chapters. (By randomizing, I hoped to prevent copyright issues when publishing the data, so nobody would be able to steal the book to read it.)
 
 <!---##Getting started: 
