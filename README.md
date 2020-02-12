@@ -2,7 +2,7 @@
 A KERAS Long-Short-Term-Memory (LSTM) Recurrent Neural Net (RNN) trained on parts of the book "Spieltrieb" by Juli Zeh
 
 ## Source:
-Nietzsche Text Generation with LSTM RNN by [KERAS](https://keras.io/examples/lstm_text_generation/)
+Long-Short-Term-Memory RNN trained to Nietzsche data by [KERAS](https://keras.io/examples/lstm_text_generation/)
 
 ## Idea: 
 Juli Zeh is my favorite German writer and love the idea to be able to generate text that she should have come up with. Therefore I decided built a Juli-Zeh-Text-Robot, based on text she has written. To begin with, I chose one of her earlier books, “Spieltrieb”, published in 2004.
@@ -40,4 +40,24 @@ indices_char = dict((i, c) for i, c in enumerate(chars))
 ['\n', ' ', '!', '+', ',', '-', '.', '/', '0', '1', '2', '3', '4', '5', '7', '8', '9', ':', ';', '=', '?', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'ß', 'à', 'ä', 'é', 'ë', 'ñ', 'ó', 'ö', 'ü', 'ą', 'ć', 'ę', 'ł', 'ń', 'ś', 'š', 'ż', '–', '’', '…', '‹', '›', '\ufeff']
 Apparently U+FEFF is a byte order mark, or ‘BOM’, i.e. an encoding specification for UTF formats. It could also be removed, but I decided to ignore it.
 --->
- 
+
+3.	In the next step, the text is parsed with a window containing 40 characters, with 3 overlapping characters
+
+```python
+# cut the text in semi-redundant sequences of maxlen characters
+maxlen = 40
+step = 3
+sentences = []
+next_chars = []
+for i in range(0, len(text) - maxlen, step):
+    sentences.append(text[i: i + maxlen])
+    next_chars.append(text[i + maxlen])
+print('nb sequences:', len(sentences))
+```
+
+This is what "sentences" looks like now: 
+> abgenudelt wie hitparad', 'iffe sind sie abgenudelt wie hitparadens', 'e sind sie abgenudelt wie hitparadensong', 'ind sie abgenudelt wie hitparadensongs v', ' sie abgenudelt wie hitparadensongs vom ', 'e abgenudelt wie hitparadensongs vom let', 
+
+In our case, there were 173870 of these.
+The "next_char" probability will be learned and predicted by the model. 
+> ['e', 'r', 'h', 'g', 'a', 'a', ' ', ' ', 'd', 'k', ',', 'a', ' ', 'r', 'u', 'r', 'h', 'n', 'i', 'i', 'g', 'c', 'e', 't', 'c', 'n', 'i', 'e', 'e', ' ', 's', 'o', 'a', 't', 'l', 
