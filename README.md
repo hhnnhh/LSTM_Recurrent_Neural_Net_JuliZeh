@@ -1,4 +1,5 @@
-# LSTM_Recurrent_Neural_Net_JuliZeh
+### Ein Flasche Schampus trinken auf die Schlafkeit der Stadt:
+# A LSTM Recurrent Neural Net trained on Juli Zeh
 A KERAS Long-Short-Term-Memory (LSTM) Recurrent Neural Net (RNN) trained on parts of the book "Spieltrieb" by Juli Zeh
 
 ## Source:
@@ -84,4 +85,7 @@ model.add(Dense(len(chars), activation='softmax'))
 model.summary()
 ```
 
-
+```python
+optimizer = RMSprop(lr=0.01)
+model.compile(loss='categorical_crossentropy', optimizer=optimizer)
+```
