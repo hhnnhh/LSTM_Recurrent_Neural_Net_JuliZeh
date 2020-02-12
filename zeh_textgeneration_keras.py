@@ -12,9 +12,7 @@ import io
 import pandas as pd
 from pathlib import Path
 import os
-home = str(Path.home())
-home
-os.chdir('C:\\Users\hanna\Documents\Programming\machine_learning\zeh_textgeneration')
+r('C:\\Users\hanna\Documents\Programming\machine_learning\zeh_textgeneration')
 #os.path.dirname(os.path.abspath(__file__))
 
 # loading the data
