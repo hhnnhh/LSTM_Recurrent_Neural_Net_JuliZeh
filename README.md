@@ -89,3 +89,15 @@ model.summary()
 optimizer = RMSprop(lr=0.01)
 model.compile(loss='categorical_crossentropy', optimizer=optimizer)
 ```
+
+```python
+model.fit(x, y,
+        batch_size=128,
+        epochs=60,
+        callbacks=[print_callback])
+print(generate_text2(500, 0.2))
+```
+
+Final output after two hours of training, with a temperature of 0.2.
+
+>flasche schampus trinken und sich hoch der stadt schließlich auf dem gewicht seines gesicht verstanden, wie er sich auf dem gesicht zu seiner schlafkeit auf dem schulhofischen stelle, die sich auf dem schlimme der stadt. ada war schon die schlafkeit der frau auf dem stadt und schließlich auf dem gesicht verstanden, die ausgeschauferung der stadt und schließlich auf dem gesicht aus der schlechtliche auf dem gesicht versteckt. das gesicht ergaben sie die stirn starrte, dass sie die schlafkeit auf dem gesicht auf der stelle, sich auf de
