@@ -141,14 +141,14 @@ Yes, we could stop now. But there are several options to improve the model:
 | more text  | ~500k characters  |
 | another optimizer, like RMSProp, AdaGrad or momentum (Nesterovs) | RMSprop(lr=0.01)  |
 | more epochs | 60 |
-|Evaluate performance at each epoch to know when to stop (early stopping) [^2]| --|
-|use the softsign (not softmax) activation function over tanh[^2]| softmax|
-|add regularization [^1]| --|
-|make window larger [^1] | 40 char + 3 steps|
+|Evaluate performance at each epoch to know when to stop (early stopping) ([^1])| --|
+|use the softsign (not softmax) activation function over tanh([^1])| softmax|
+|add regularization ([^2])| --|
+|make window larger ([^2]) | 40 char + 3 steps|
 
 
-[^2] More information and optimization methods for LSTM can be found [here](https://pathmind.com/wiki/lstm#long).
-[^1] Window and regularization idea: Aurelien Géron, p. 532
+[^1] More information and optimization methods for LSTM can be found [here](https://pathmind.com/wiki/lstm#long).
+[^2] Window and regularization idea: Aurelien Géron, p. 532
 
 I'll start with adding another LSTM layer. 
 It is important to add "return_sequences=TRUE" to the all the LSTM layers ***except*** for the last one. Setting this flag to True lets Keras know that LSTM output should contain all historical generated outputs along with time stamps (3D). So, next LSTM layer can work further on the data.
