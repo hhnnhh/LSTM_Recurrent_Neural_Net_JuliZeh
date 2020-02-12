@@ -1,20 +1,23 @@
 ### Ein Flasche Schampus trinken auf die Schlafkeit der Stadt:
 # A LSTM Recurrent Neural Net trained on Juli Zeh
-A KERAS Long-Short-Term-Memory (LSTM) Recurrent Neural Net (RNN) trained on parts of the book "Spieltrieb" by Juli Zeh
+A KERAS **Long Short-Term Memory** (LSTM) **Recurrent Neural Net** (RNN) trained on parts of the book "Spieltrieb" by Juli Zeh
 
 ## Source:
-Long-Short-Term-Memory RNN trained to Nietzsche data by [KERAS](https://keras.io/examples/lstm_text_generation/)
+Long Short-Term Memory RNN designed to be trained on Nietzsche by [KERAS](https://keras.io/examples/lstm_text_generation/)
 
 ## Idea: 
 Juli Zeh is my favorite German writer and love the idea to be able to generate text that she should have come up with. Therefore I decided built a Juli-Zeh-Text-Robot, based on text she has written. To begin with, I chose one of her earlier books, “Spieltrieb”, published in 2004.
 
 ## LSTM RNN
-The basic model is a Recurrent Neural Network, a type of networks which can handle sequential data such as text. Long-Short-Term Memory cells are an extension of these networks (Hofreiter ..). They are included to handle a common problem in neural nets, called the *Backpropagation of Error*. For backpropagation, first a training example is propagated through the network, then the difference between the network output and its expected output is calculated. The difference is calculated by the *loss function*, representing its "cost" or error.  The error is now propagated back through the output to the input layer. The weights of the neuron connections are changed depending on their influence on the error. This should result in an approximation to the desired output.
-A common LSTM architecture is composed of a cell, which is the memory part of the LSTM unit, and three "regulators", usually called gates, of the flow of information inside the LSTM unit: an input gate, an output gate and a forget gate.
+The basic model is a **Recurrent Neural Network**, a network type which can handle sequential data such as text. Long Short Term Memory (LSTM) cells are an extension of these networks ([Hochreiter & Schmidthuber, 1997](https://www.researchgate.net/publication/13853244_Long_Short-term_Memory/link/5700e75608aea6b7746a0624/download)). They are included to handle a common problem in neural nets, called the *Backpropagation of Error*. 
+
+For backpropagation, first a training example is propagated through the network, then the difference between the network output and its expected output is calculated. The difference is calculated by the **loss function**, representing its *cost* or error.  The error is now propagated back through the output to the input layer. The weights of the neuron connections are changed depending on their influence on the error. This should result in an approximation to the desired output.
+A common LSTM architecture is composed of a cell, which is the memory part of the LSTM unit, and three "regulators", usually called gates, of the flow of information inside the LSTM unit: an **input gate**, an **output gate** and a **forget gate**.
+
 The language model predicts the probability of the next couple of characters in a sentence based on the words and characters the model was trained on. 
 
 ## Data: 
-According to the Keras developers, the training data set should at least have ~100k characters, but ~1M is better. I chose the book “Spieltrieb” by Juli Zeh and copied a text file of ~180k characters from it, while randomizing chapters. (By randomizing, I hoped to prevent copyright issues when publishing the data, so nobody would be able to steal the book to read it.)
+According to the Keras developers, the training data set should at least have ~100k characters, but ~1M is better. I chose the book “Spieltrieb” by Juli Zeh and copied a text file of 521.548 characters (including spaces) from it, while randomizing chapters. (By randomizing, I hoped to prevent copyright issues when publishing the data.)
 
 <!---##Getting started: 
 First thing was loading the packages, which was awkwardly the biggest problem I encountered when training the NN. After some days of having system shut downs every few minutes I finally decided to deinstall Anaconda and install Miniconda, cleaning the system, reinstalling the IDE (PyCharm) – which was the best decision, because afterwards everything was finally working fine. 
@@ -75,9 +78,12 @@ y = np.zeros((len(sentences), len(chars)), dtype=np.bool)
 
 ## the Model
 In the original version, the model contains a single layer of LSTM cells with 128 cells and a Dense layer with 'softmax' activation.
-The **Dense layer** is added to get output in format needed by the user. Here Dense(len(chars)) means 70 different classes of output, i.e. 70 chars, will be generated using *softmax* activation. 
+The **Dense layer** is added to get output in format needed by the user. Here ```Dense(len(chars))``` means 70 different classes of output, i.e. 70 chars, will be generated using *softmax* activation. 
 <!---(In case you are using LSTM for time series then you should have Dense(1). So that only one numeric output is given.) --->
 Models with LSTM layers automatically run on CPU, if the layers are added directly. 
+
+The **softmax function** (or Maximum Entropy (MaxEnt) Classifier), is an activation function that turns numbers aka logits into probabilities that sum to one. Softmax function outputs a vector that represents the probability distributions of a list of potential outcomes. ([More about softmax.](https://towardsdatascience.com/softmax-function-simplified-714068bf8156))
+
 
 
 ```python
@@ -109,27 +115,45 @@ Final output after two hours of training, with a temperature of 0.2.
 ## Optimization
 
 Yes, we could stop now. But there are several options to improve the model: 
+<!---
 1. adding more LSTM layers      
-    - [ ] we have one now
+    - [x] we have one now
 1. adding more cells
-    - we have 128, which is quite a lot
+    - [ ] we have 128, which is quite a lot
 1. training with more text 
-    - ~500k characters now
+    - [ ] ~500k characters now
 1. using optimizers 
-    - we've been using RMSprop(lr=0.01)
+    - [ ] we've been using RMSprop(lr=0.01)
 1. training with more epochs 
-    - we have 60
+    - [ ] we have 60
+    --->
     
-| Optimization options | current |
-| --------------------:| ---:|
+| Optimization options: | in the current version: |
+| :--------------------| ---:|
 | adding more LSTM layers   | 1 layer |
 | adding more cells |  128 |
 | more text  | ~500k characters  |
-| another optimizer | RMSprop(lr=0.01)  |
+| another optimizer, like RMSProp, AdaGrad or momentum (Nesterovs) | RMSprop(lr=0.01)  |
 | more epochs | 60 |
-
-I'll start with adding another LSTM layer: 
-
-
+|Evaluate performance at each epoch to know when to stop (early stopping)| --|
+|use the softsign (not softmax) activation function over tanh| softmax|
 
 
+More information and optimization methods for LSTM can be found [here](https://pathmind.com/wiki/lstm#long).
+
+I'll start with adding another LSTM layer. 
+It is important to add "return_sequences=TRUE" to the all the LSTM layers ***except*** for the last one. Setting this flag to True lets Keras know that LSTM output should contain all historical generated outputs along with time stamps (3D). So, next LSTM layer can work further on the data.
+
+```Python
+print('Build model...')
+model = Sequential()
+model.add(LSTM(128, return_sequences=True, input_shape=(maxlen, len(chars))))
+model.add(LSTM(128))
+model.add(Dense(len(chars), activation='softmax'))
+model.summary()
+```
+
+
+
+
+[^1] 
