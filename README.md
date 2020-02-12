@@ -75,6 +75,9 @@ y = np.zeros((len(sentences), len(chars)), dtype=np.bool)
 
 ## the Model
 In the original version, the model contains a single layer of LSTM cells with 128 cells and a Dense layer with 'softmax' activation.
+The **Dense layer** is added to get output in format needed by the user. Here Dense(len(chars)) means 70 different classes of output, i.e. 70 chars, will be generated using *softmax* activation. 
+<!---(In case you are using LSTM for time series then you should have Dense(1). So that only one numeric output is given.) --->
+Models with LSTM layers automatically run on CPU, if the layers are added directly. 
 
 
 ```python
@@ -101,3 +104,32 @@ print(generate_text2(500, 0.2))
 Final output after two hours of training, with a temperature of 0.2.
 
 >flasche schampus trinken und sich hoch der stadt schließlich auf dem gewicht seines gesicht verstanden, wie er sich auf dem gesicht zu seiner schlafkeit auf dem schulhofischen stelle, die sich auf dem schlimme der stadt. ada war schon die schlafkeit der frau auf dem stadt und schließlich auf dem gesicht verstanden, die ausgeschauferung der stadt und schließlich auf dem gesicht aus der schlechtliche auf dem gesicht versteckt. das gesicht ergaben sie die stirn starrte, dass sie die schlafkeit auf dem gesicht auf der stelle, sich auf de
+
+
+## Optimization
+
+Yes, we could stop now. But there are several options to improve the model: 
+1. adding more LSTM layers      
+    - [ ] we have one now
+1. adding more cells
+    - we have 128, which is quite a lot
+1. training with more text 
+    - ~500k characters now
+1. using optimizers 
+    - we've been using RMSprop(lr=0.01)
+1. training with more epochs 
+    - we have 60
+    
+| Optimization options | current |
+| --------------------:| ---:|
+| adding more LSTM layers   | 1 layer |
+| adding more cells |  128 |
+| more text  | ~500k characters  |
+| another optimizer | RMSprop(lr=0.01)  |
+| more epochs | 60 |
+
+I'll start with adding another LSTM layer: 
+
+
+
+
