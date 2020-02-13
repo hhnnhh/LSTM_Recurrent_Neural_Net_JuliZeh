@@ -134,15 +134,15 @@ Yes, we could stop now. But there are several options to improve the model:
     - [ ] we have 60
     --->
     
-| Optimization options: | in the current version: |
-| :--------------------| ---:|
-| adding more LSTM layers   | 1 layer |
-| adding more cells |  128 |
-| more text  | ~500k characters  |
-| another optimizer, like RMSProp, AdaGrad or momentum (Nesterovs) | RMSprop(lr=0.01)  |
-| more epochs | 60 |
-|Evaluate performance at each epoch to know when to stop (early stopping)<sup>1</sup>| --|
-|use the softsign (not softmax) activation function over tanh<sup>1</sup>| softmax|
+|Optimization options: | in the current version: |
+|:--------------------| ---:|
+|a) adding more LSTM layers   | 1 layer |
+|b) reducing dimensionality of layer |  128 |
+|c) use the softsign (not softmax) activation function over tanh<sup>1</sup>| softmax|
+|more text  | ~500k characters  |
+|another optimizer, like RMSProp, AdaGrad or momentum (Nesterovs) | RMSprop(lr=0.01)  |
+|more epochs | 60 |
+|evaluate performance at each epoch to know when to stop (early stopping)<sup>1</sup>| --|
 |add regularization<sup>2</sup>| --|
 |make window larger<sup>2</sup>| 40 char + 3 steps|
 
@@ -151,8 +151,10 @@ Yes, we could stop now. But there are several options to improve the model:
 
 <sup>2</sup>Hands-On Machine-Learning with Scikit Learn.. Aurelien Géron, p. 532
 
+### a) adding another LSTM layer
+#### "The stutterer" (tro   e       e  dd  ee)
 I'll start with adding another LSTM layer. 
-It is important to add "return_sequences=TRUE" to the all the LSTM layers ***except*** for the last one. Setting this flag to True lets Keras know that LSTM output should contain all historical generated outputs along with time stamps (3D). So, next LSTM layer can work further on the data.
+It is important to add "return_sequences=TRUE" to the all the LSTM layers ***except*** for the last one. Setting this flag to True lets Keras know that LSTM output should contain all historical generated outputs along with time stamps (3D). Which means, it will contain batch size, time steps, and hidden state. So, next LSTM layer can work further on the data.
 
 ```Python
 print('Build model...')
@@ -162,8 +164,39 @@ model.add(LSTM(128))
 model.add(Dense(len(chars), activation='softmax'))
 model.summary()
 ```
+Unfortunately, after training the model for 12.47 hours (!) the results got worse:
 
+diversity: 0.2
+>----- Generating with seed: "r direkt über die nackte, inzwischen tro"
+r direkt über die nackte, inzwischen tro   e       e  dd  ee         e  ed e d eeee s   e     h e     e  ee    e h      e aeeeed   hd  e    ee d  d  e e e e  ed e eee  e h     de e  eeh  dd ed s  d  ee  er e    ?e eee   d he dee   ee h e      ee h i e e d     e  e     e d     e d ddh   e  ee    e  e     ee  eeeere  h  e ee d  eee e  e  eee   es  d r       dee  d  ee dh d    i    d  e  e  aeie e    e e i   e    e e e e e      hh   d   e 
 
+----- diversity: 1.2
+>----- Generating with seed: "r direkt über die nackte, inzwischen tro"
+r direkt über die nackte, inzwischen tro vcer lhitlhlnsl rzest hs   sdev tu dree hglieeüisle srihhr tvrie  je uegatehu rtdevhiroiti  bhrhhfenevü ds i e irtlh ehhec giegiuuecddeue ehdrtdniebi i hu aatadhiddeid lre kls heff kggkehgeccwennd eninanhe ueh vhrpiht e hl er s diros dailutss.aehricisgr ere ss tiieeu uieheh ielaocnh te.hriib tnesi.  ädutere lih ik rh urssaetl aiuiswmrliie gaeirdaavdsi re gei krf t h trsevrd.uhaha  oerpepnmveris e
 
+### Two LSTM layers, 32 dimensionality
+#### *or* The alliteration machine "schließen stirte schließen schließen schlieben"
+The next optimization approach was reducing the dimensionality of the output space to 32. It took only 3.23 hours to train. However, the result is better than the last approach with a dimensionality of 128, but still worse than the first approach with one LSTM layer. 
+This model seems to love words with "sch" or "s"? Sounds more like a alliteration machine..
+This is what the model looks like:
 
-[^1] 
+```python
+print('Build model...')
+model = Sequential()
+model.add(LSTM(32,return_sequences=True, input_shape=(maxlen, len(chars))))
+model.add(LSTM(32))
+model.add(Dense(len(chars), activation='softmax'))
+model.summary()
+```
+
+print(generate_text2(500, 0.2))
+> nichts ist schöner als überindividuelleit hatte. das schließlichen nicht sich das schließen sich der schlichter der schließen sich die stirte auf der schließen sich das er die schließen sich die schlieben war der schließlichen schließen sich die stierte sich der gescheiden schließen sich der schlichterten der schließen sich die stelle sich die stand und die eine schließer der stiegen und die stelle sich die eine ersten warbelangen und werden sich der schließlichen schließen sich die schließen eine schließen der schließen hatte. die s
+>
+### only one LSTM layer, trained on 120 epochs
+
+```python
+model.fit(x, y,
+          batch_size=128,
+          epochs=120,
+          callbacks=[print_callback])
+```
