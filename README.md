@@ -193,10 +193,18 @@ print(generate_text2(500, 0.2))
 > nichts ist schöner als überindividuelleit hatte. das schließlichen nicht sich das schließen sich der schlichter der schließen sich die stirte auf der schließen sich das er die schließen sich die schlieben war der schließlichen schließen sich die stierte sich der gescheiden schließen sich der schlichterten der schließen sich die stelle sich die stand und die eine schließer der stiegen und die stelle sich die eine ersten warbelangen und werden sich der schließlichen schließen sich die schließen eine schließen der schließen hatte. die s
 >
 ### only one LSTM layer, trained on 120 epochs
+#### The Hans-Arp-would-probably-be-happy Generator
 
 ```python
 model.fit(x, y,
           batch_size=128,
           epochs=120,
           callbacks=[print_callback])
-```
+``` 
+After approximately 6 hours and 120 epochs, I do love the lyrics, especially the first sentence ***das luftmus füllt den menschen lungen gegen die stirn.*** Genius! I think, the poet Hans Arp would have loved it. But honestly, the generated text did not get more Juli-Zeh-like after 120 epochs, did it?
+
+----- Generating text after Epoch: 119
+
+```print(generate_text2(500, 0.2))```
+
+>. das luftmus füllt den menschen lungen gegen die stirn. der wasserkommen sich seiner schweigendes nacht eine frau, dass es sich auf den schweigen seiner gesicht zu erreichen. das war er sich auf den tisch einen montern schlag. ada hatte sich auf die schnellen augen und schaute ein bisschen versteckten sich von der schweigende antwort. er war an den ersten atigren spielen der schweigende stelle zu erreichen. das war er die schulzweck auf den konsanten. sie war erfahrt, sich auf die schweigens aus der stirn. wie war es stehen sich auf 
