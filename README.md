@@ -2,8 +2,10 @@
 # A LSTM Recurrent Neural Net trained on Juli Zeh
 A KERAS **Long Short-Term Memory** (LSTM) **Recurrent Neural Net** (RNN) trained on parts of the book "Spieltrieb" by Juli Zeh
 
+Disclaimer: I guess theses models are more fun if you know German. However, highly recommended for fans of German dadaist poets. 
+
 ## Source:
-Long Short-Term Memory RNN designed to be trained on Nietzsche by [KERAS](https://keras.io/examples/lstm_text_generation/)
+Long Short-Term Memory RNN designed to be trained on Nietzsche, provided by [KERAS](https://keras.io/examples/lstm_text_generation/)
 
 ## Idea: 
 Juli Zeh is my favorite German writer and love the idea to be able to generate text that she should have come up with. Therefore I decided built a Juli-Zeh-Text-Robot, based on text she has written. To begin with, I chose one of her earlier books, “Spieltrieb”, published in 2004.
@@ -138,10 +140,10 @@ Yes, we could stop now. But there are several options to improve the model:
 |:--------------------| ---:|
 |a) adding more LSTM layers   | 1 layer |
 |b) reducing dimensionality of layer |  128 |
-|c) use the softsign (not softmax) activation function over tanh<sup>1</sup>| softmax|
+|c) run more epochs | 60 |
+|d) use the softsign (not softmax) activation function over tanh<sup>1</sup>| softmax|
 |more text  | ~500k characters  |
 |another optimizer, like RMSProp, AdaGrad or momentum (Nesterovs) | RMSprop(lr=0.01)  |
-|more epochs | 60 |
 |evaluate performance at each epoch to know when to stop (early stopping)<sup>1</sup>| --|
 |add regularization<sup>2</sup>| --|
 |make window larger<sup>2</sup>| 40 char + 3 steps|
@@ -208,3 +210,46 @@ After approximately 6 hours and 120 epochs, I do love the lyrics, especially the
 ```print(generate_text2(500, 0.2))```
 
 >. das luftmus füllt den menschen lungen gegen die stirn. der wasserkommen sich seiner schweigendes nacht eine frau, dass es sich auf den schweigen seiner gesicht zu erreichen. das war er sich auf den tisch einen montern schlag. ada hatte sich auf die schnellen augen und schaute ein bisschen versteckten sich von der schweigende antwort. er war an den ersten atigren spielen der schweigende stelle zu erreichen. das war er die schulzweck auf den konsanten. sie war erfahrt, sich auf die schweigens aus der stirn. wie war es stehen sich auf 
+
+## More epochs, while implementing EarlyStopping
+
+Keras callbacks argument let's us specify a list of objects that Keras will call at the start and end of the training, at the start and end of each epoch (this was already implemented from the beginning, when the lambda-function generated text chunks after each epoch) and even before and after  processing each batch (Géron, 2019, p. 315). 
+In the next run, we implement a stopping function ```early_stopping_cb = keras.callbacks.EarlyStopping(patience=10, restore_best_weights=True)``` which will interrupt the training, if it does not make any more progress (i.e. when the loss function does not minimize anymore).
+
+Additionally, I implement the TensorBoard, which enables us to visualize the learning curves during training, computation graph, analyze training statistics, view images and much more. It's already integrated into Tensorflow. 
+
+```python
+history = model.fit(x, y,
+          batch_size=128,
+          epochs=100,
+          callbacks=[print_callback, tensorboard_cb, early_stopping_cb])
+```
+So, now let's see, how many epochs will be run if early stopping is integrated? 
+
+
+
+### Optimizer: adagrad
+### The "the-more-S-the-better" generator 
+
+
+According to the [Keras](https://keras.io/optimizers/) developers, "Adagrad is an optimizer with parameter-specific learning rates, which are adapted relative to how frequently a parameter gets updated during training. The more updates a parameter receives, the smaller the learning rate."
+
+It is recommended in the book "Hands-On Machine-Learning" by Aurelién Géron. 
+
+```python
+#optimizer used by first keras model:
+#optimizer = RMSprop(lr=0.01)
+#import keras.optimizers
+#from keras.optimizers import adagrad
+optimizer = adagrad(lr=0.01)
+model.compile(loss='categorical_crossentropy', optimizer=optimizer)
+```
+With Adagrad, after 2.69 hours, the model seems to infer that "S" is the most important letter in the text.  Is it? No. Actually, it's the fifth frequent character in the text, after the blank space, e, n, i and r. However, this doesn't say anything about the frequencies of the onsets. 
+
+>eine freundin gebraucht hätte. die mädchen er sich war ein der schulen sich der stand sie auf der steiten sich der schleigen sich seine sterten wie ein steiten auf den stiellich der schulen der anderen der für die erteinen auf der steiten sich der steren auf der kannte auf der stand auf der schleisen vor der schleigen besterten geschlenden und der steren sich auf der weile der stand sie sich sie sich sie sich verstien, die schwieden zu schielen, das er sich der schließ und sich sie eine frausen schleigen und der schleisen der schleige
+>
+### Adam Optimizer
+After 3.49 hours
+
+>print(generate_text2(500, 0.2))
+d vor der sie sich, wie sie jetzt glaubte sie auf den sinn auf der terit, stellte sie auf eine ausiliente sich in der problem sich und schwer zur fenster aus der menschen auf der stelle vor einer schreibung nicht einziger geschlitzten auf der spielerungen straßen, der sich die grund der geschenseite andere nahe hatte sie auf einem kopf auf dem hauben leicht und stempflichen gesehen nicht auf einer sinn auf den steinen zu ungenehnt, und der geschichtsmitzlicht einen ersten fahr. ada den karre zu entragen, sondern das heraus treppen zu 

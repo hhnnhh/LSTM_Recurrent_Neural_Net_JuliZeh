@@ -131,3 +131,6 @@ dmypy.json
 #Pycharm cache
 .idea
 .gitignore
+
+#additional stuff
+docs
