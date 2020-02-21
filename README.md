@@ -10,6 +10,21 @@ Long Short-Term Memory RNN designed to be trained on Nietzsche, provided by [KER
 ## Idea: 
 Juli Zeh is my favorite German writer and love the idea to be able to generate text that she could have come up with. Therefore I decided built a Juli-Zeh-Text-Generator, based on text she has written. To begin with, I chose one of her earlier books, “Spieltrieb”, published in 2004.
 
+## Outline:
+1. Data Preprocessing
+1. Model Setup
+1. Model Training
+1. Model Optimization
+    1. More Neural Layer
+    1. Less Dimensions
+    1. More Epochs
+        1. integrating *EarlyStopping* Callback function
+    1. New activation function (Softgrad replacing Softmax)
+    1. Different Optimizers (default = RMSProp)
+        1. Adagrad
+        1. Adam
+    
+
 ## LSTM RNN
 The basic model is a **Recurrent Neural Network**, a network type which can handle sequential data such as text. Long Short Term Memory (LSTM) cells are an extension of these networks ([Hochreiter & Schmidthuber, 1997](https://www.researchgate.net/publication/13853244_Long_Short-term_Memory/link/5700e75608aea6b7746a0624/download)). They are included to handle a common problem in neural nets, called the *Backpropagation of Error*. 
 
