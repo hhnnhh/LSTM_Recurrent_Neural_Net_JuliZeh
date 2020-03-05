@@ -127,7 +127,9 @@ def get_run_logdir():
     return os.path.join(root_logdir, run_id)
 run_logdir = get_run_logdir()
 # new: stop function, stops when loss does not make any progress
-early_stopping_cb = keras.callbacks.EarlyStopping(patience=10, restore_best_weights=True)
+import tensorboard
+early_stopping_cb = keras.callbacks.EarlyStopping(monitor='loss', patience=10, restore_best_weights=True)
+tensorboard_cb = keras.callbacks.TensorBoard(run_logdir)
 
 history = model.fit(x, y,
           batch_size=128,
