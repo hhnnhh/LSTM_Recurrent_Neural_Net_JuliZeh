@@ -1,8 +1,8 @@
 ### Ein Flasche Schampus trinken auf die Schlafkeit der Stadt:
 # A LSTM Recurrent Neural Net trained on Juli Zeh
-A KERAS **Long Short-Term Memory** (LSTM) **Recurrent Neural Net** (RNN) trained on parts of the book "Spieltrieb" by Juli Zeh
+A KERAS **Long Short-Term Memory** (LSTM) **Recurrent Neural Net** (RNN) trained on the book "Spieltrieb" by Juli Zeh
 
-Disclaimer: I guess theses models are more fun if you know German. However, highly recommended for fans of German dadaist poets ;-) 
+Disclaimer: Knowledge of the German language will probably increase the fun. Highly recommended for fans of German dadaism :) 
 
 ## Source:
 Long Short-Term Memory RNN designed to be trained on Nietzsche, provided by [KERAS](https://keras.io/examples/lstm_text_generation/)
@@ -266,5 +266,6 @@ With Adagrad, after 2.69 hours, the model seems to infer that "S" is the most im
 ### Adam Optimizer
 After 3.49 hours
 
->print(generate_text2(500, 0.2))
-d vor der sie sich, wie sie jetzt glaubte sie auf den sinn auf der terit, stellte sie auf eine ausiliente sich in der problem sich und schwer zur fenster aus der menschen auf der stelle vor einer schreibung nicht einziger geschlitzten auf der spielerungen straßen, der sich die grund der geschenseite andere nahe hatte sie auf einem kopf auf dem hauben leicht und stempflichen gesehen nicht auf einer sinn auf den steinen zu ungenehnt, und der geschichtsmitzlicht einen ersten fahr. ada den karre zu entragen, sondern das heraus treppen zu 
+```print(generate_text2(500, 0.2))```
+
+>d vor der sie sich, wie sie jetzt glaubte sie auf den sinn auf der terit, stellte sie auf eine ausiliente sich in der problem sich und schwer zur fenster aus der menschen auf der stelle vor einer schreibung nicht einziger geschlitzten auf der spielerungen straßen, der sich die grund der geschenseite andere nahe hatte sie auf einem kopf auf dem hauben leicht und stempflichen gesehen nicht auf einer sinn auf den steinen zu ungenehnt, und der geschichtsmitzlicht einen ersten fahr. ada den karre zu entragen, sondern das heraus treppen zu 
